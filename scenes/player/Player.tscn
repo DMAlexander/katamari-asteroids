@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://yqfc8kkwk0hx"]
+
+[ext_resource type="Script" uid="uid://dkv1dl5n1j4le" path="res://scenes/player/player.gd" id="1_gfjak"]
+[ext_resource type="Texture2D" uid="uid://cl4mf068as6os" path="res://scenes/player/BasicShip.png" id="1_wr5hl"]
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_gfjak")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_wr5hl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+[node name="Muzzle" type="Marker2D" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(1.5, 1.5)
+position_smoothing_enabled = true
+
+[node name="ThrusterParticles" type="GPUParticles2D" parent="."]
+visible = false
+sub_emitter = NodePath(".")
