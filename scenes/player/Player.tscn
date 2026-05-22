@@ -1,17 +1,28 @@
-[gd_scene load_steps=3 format=3 uid="uid://yqfc8kkwk0hx"]
+[gd_scene load_steps=6 format=3 uid="uid://yqfc8kkwk0hx"]
 
 [ext_resource type="Script" uid="uid://dkv1dl5n1j4le" path="res://scenes/player/player.gd" id="1_gfjak"]
 [ext_resource type="Texture2D" uid="uid://cl4mf068as6os" path="res://scenes/player/BasicShip.png" id="1_wr5hl"]
+[ext_resource type="PackedScene" uid="uid://gb2to8m4ga0e" path="res://scenes/projectiles/laser.tscn" id="2_4kuee"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4kuee"]
+radius = 5.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_524rm"]
+radius = 26.0
 
 [node name="Player" type="CharacterBody2D"]
+collision_mask = 14
 script = ExtResource("1_gfjak")
+laser_scene = ExtResource("2_4kuee")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_wr5hl")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_4kuee")
 
 [node name="Muzzle" type="Marker2D" parent="."]
+position = Vector2(0, -7)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(1.5, 1.5)
@@ -20,3 +31,11 @@ position_smoothing_enabled = true
 [node name="ThrusterParticles" type="GPUParticles2D" parent="."]
 visible = false
 sub_emitter = NodePath(".")
+
+[node name="MagnetArea" type="Area2D" parent="."]
+
+[node name="CircleShape2D" type="CollisionShape2D" parent="MagnetArea"]
+shape = SubResource("CircleShape2D_524rm")
+debug_color = Color(0.5175352, 0.5352984, 0.5846774, 0.41960785)
+
+[connection signal="area_entered" from="MagnetArea" to="." method="_on_magnet_area_area_entered"]

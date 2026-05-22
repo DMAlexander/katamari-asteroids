@@ -1,12 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://xriadxufhsx8"]
+[gd_scene load_steps=3 format=3 uid="uid://xriadxufhsx8"]
 
 [ext_resource type="PackedScene" uid="uid://yqfc8kkwk0hx" path="res://scenes/player/Player.tscn" id="1_jbqir"]
+[ext_resource type="PackedScene" uid="uid://bkao1ywcuegt2" path="res://scenes/debris/debris.tscn" id="2_yautc"]
 
 [node name="TestLevel" type="Node2D"]
 
-[node name="ColorRect" type="ColorRect" parent="."]
-offset_right = 320.0
-offset_bottom = 182.0
-color = Color(0.7204674, 0.7204675, 0.7204674, 1)
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="MassLabel" type="Label" parent="UI"]
+offset_right = 49.0
+offset_bottom = 23.0
+text = "Mass: "
 
 [node name="Player" parent="." instance=ExtResource("1_jbqir")]
+
+[node name="Debris" parent="." instance=ExtResource("2_yautc")]
+position = Vector2(-28, -122)

@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://doddbbj6gnjee"]
+
+[ext_resource type="Script" uid="uid://t40kp5vv4wp3" path="res://scenes/pickups/mass_pickup.gd" id="1_lr6ul"]
+[ext_resource type="Texture2D" uid="uid://h3d02q5l8cxw" path="res://scenes/debris/BasicDebris.png" id="2_bb4p6"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bb4p6"]
+
+[node name="MassPickup" type="Area2D"]
+script = ExtResource("1_lr6ul")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_bb4p6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_bb4p6")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+visible = false
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

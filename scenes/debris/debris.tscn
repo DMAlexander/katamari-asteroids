@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://bkao1ywcuegt2"]
+
+[ext_resource type="Script" uid="uid://ctky13t0hlaeu" path="res://scenes/debris/debris.gd" id="1_sq53q"]
+[ext_resource type="Texture2D" uid="uid://h3d02q5l8cxw" path="res://scenes/debris/BasicDebris.png" id="2_4jnsk"]
+[ext_resource type="PackedScene" uid="uid://doddbbj6gnjee" path="res://scenes/pickups/mass_pickup.tscn" id="2_o3vpj"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4jnsk"]
+radius = 8.0
+
+[node name="Debris" type="Area2D"]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_sq53q")
+mass_pickup_scene = ExtResource("2_o3vpj")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_4jnsk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_4jnsk")
