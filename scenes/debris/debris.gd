@@ -15,7 +15,12 @@ enum DebrisSize {
 
 var velocity := Vector2.ZERO
 
+
+
+
+
 func _ready():
+	add_to_group("debris")
 	apply_size_data()
 	spin_speed = randf_range(-1.2, 1.2)
 	
@@ -36,6 +41,10 @@ func apply_size_data():
 			health = 1
 
 func _process(delta):
+	
+	var arena = get_tree().current_scene.get_node("Arena")
+	if arena:
+		velocity += arena.world_drift * delta
 
 	global_position += velocity * delta
 	velocity *= 0.98
