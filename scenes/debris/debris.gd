@@ -11,10 +11,13 @@ enum DebrisSize {
 @export var size := DebrisSize.LARGE
 ##@export var debris_scene: PackedScene
 
+@export var spin_speed := 0.5
+
 var velocity := Vector2.ZERO
 
 func _ready():
 	apply_size_data()
+	spin_speed = randf_range(-1.2, 1.2)
 	
 func apply_size_data():
 
@@ -35,8 +38,9 @@ func apply_size_data():
 func _process(delta):
 
 	global_position += velocity * delta
-
 	velocity *= 0.98
+	rotation += spin_speed * delta
+	rotation += sin(Time.get_ticks_msec() * 0.001) * 0.002
 
 func take_damage(amount: int):
 	health -= amount
