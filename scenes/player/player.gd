@@ -26,6 +26,9 @@ var mass := 1.0
 @export var magnet_growth := 12.0
 @export var max_magnet_radius := 900.0
 
+@export var level_bounds := Rect2(Vector2(-1000, -600), Vector2(2000, 1200))
+@export var bounce_strength := 0.8
+
 var can_shoot := true
 var visual_scale := 1.0
 
@@ -63,7 +66,28 @@ func _physics_process(delta):
 	velocity = velocity.move_toward(Vector2.ZERO, drag_strength * delta * 20)
 
 	update_camera_zoom(delta)
+	apply_bounds_bounce()
 	move_and_slide()
+
+func apply_bounds_bounce():
+
+	var pos = global_position
+
+	if pos.x < level_bounds.position.x:
+		global_position.x = level_bounds.position.x
+		velocity.x = abs(velocity.x) * bounce_strength
+
+	elif pos.x > level_bounds.end.x:
+		global_position.x = level_bounds.end.x
+		velocity.x = -abs(velocity.x) * bounce_strength
+
+	if pos.y < level_bounds.position.y:
+		global_position.y = level_bounds.position.y
+		velocity.y = abs(velocity.y) * bounce_strength
+
+	elif pos.y > level_bounds.end.y:
+		global_position.y = level_bounds.end.y
+		velocity.y = -abs(velocity.y) * bounce_strength
 
 func get_effective_acceleration():
 
