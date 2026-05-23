@@ -96,8 +96,32 @@ func spawn_mass():
 			randf_range(-8, 8)
 		)
 
+func get_ram_requirement():
+
+	match size:
+
+		DebrisSize.SMALL:
+			return 5.0
+
+		DebrisSize.MEDIUM:
+			return 12.0
+
+		DebrisSize.LARGE:
+			return 25.0
+
+	return 999.0
+
 # Laser collision (optional safety hook)
 func _on_area_entered(area):
 
 	if area.has_method("queue_free"):
 		area.queue_free()
+
+
+func _on_body_entered(body):
+
+	if body.has_method("add_mass"):
+
+		if body.mass >= get_ram_requirement():
+
+			call_deferred("destroy")
