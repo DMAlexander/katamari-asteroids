@@ -46,6 +46,11 @@ func take_damage(amount: int):
 
 
 func destroy():
+	
+	var gm = get_tree().current_scene.get_node("GameManager")
+
+	if gm:
+		gm.add_kill()
 
 	match size:
 

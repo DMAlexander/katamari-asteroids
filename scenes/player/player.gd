@@ -8,10 +8,6 @@ extends CharacterBody2D
 @export var laser_scene: PackedScene
 @export var fire_rate := 0.15
 
-## Make player attract mass
-@export var magnet_radius := 200.0
-@export var magnet_strength := 8.0
-
 ## Handling player ship growth
 var mass := 1.0
 @export var mass_growth_scale := 0.02
@@ -47,6 +43,9 @@ func _physics_process(delta):
 
 	if Input.is_action_pressed("shoot") and can_shoot:
 		shoot()
+		
+	if Input.is_action_just_pressed("ui_cancel"):
+		end_run()
 
 	# Rotation
 	var rotation_input := Input.get_axis("move_left", "move_right")
@@ -98,6 +97,13 @@ func update_camera_zoom(delta):
 		Vector2.ONE * target_zoom,
 		zoom_smoothing * delta
 	)
+
+func end_run():
+	var gm = get_tree().current_scene.get_node("GameManager")
+
+	if gm:
+		gm.set_final_mass(mass)
+		gm.end_run()
 
 func shoot():
 

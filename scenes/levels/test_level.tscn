@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://xriadxufhsx8"]
+[gd_scene load_steps=5 format=3 uid="uid://xriadxufhsx8"]
 
 [ext_resource type="PackedScene" uid="uid://yqfc8kkwk0hx" path="res://scenes/player/Player.tscn" id="1_jbqir"]
 [ext_resource type="PackedScene" uid="uid://bkao1ywcuegt2" path="res://scenes/debris/debris.tscn" id="2_yautc"]
 [ext_resource type="Script" uid="uid://cuqwumodo758e" path="res://scenes/levels/wave_manager.gd" id="3_fr1um"]
+[ext_resource type="Script" uid="uid://dwo07fh72fpli" path="res://scenes/levels/game_manager.gd" id="4_v45ci"]
 
 [node name="TestLevel" type="Node2D"]
 
@@ -12,6 +13,12 @@
 offset_right = 49.0
 offset_bottom = 23.0
 text = "Mass: "
+
+[node name="ResultsLabel" type="Label" parent="UI"]
+offset_left = 83.0
+offset_right = 139.0
+offset_bottom = 23.0
+text = "Results:"
 
 [node name="Player" parent="." instance=ExtResource("1_jbqir")]
 
@@ -30,3 +37,6 @@ position = Vector2(21, -76)
 [node name="WaveManager" type="Node" parent="."]
 script = ExtResource("3_fr1um")
 debris_scene = ExtResource("2_yautc")
+
+[node name="GameManager" type="Node" parent="."]
+script = ExtResource("4_v45ci")
