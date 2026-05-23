@@ -1,7 +1,7 @@
 extends Node2D
 
 @export var size := Vector2(2000, 1200)
-@export var show_debug := true
+@export var show_debug := false
 
 @export var world_drift := Vector2(12, 4)
 

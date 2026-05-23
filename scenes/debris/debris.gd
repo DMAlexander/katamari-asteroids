@@ -143,3 +143,18 @@ func _on_body_entered(body):
 		if body.mass >= get_ram_requirement():
 
 			call_deferred("destroy")
+
+func get_mass_value():
+
+	match size:
+
+		DebrisSize.SMALL:
+			return 1.0
+
+		DebrisSize.MEDIUM:
+			return 3.0
+
+		DebrisSize.LARGE:
+			return 6.0
+
+	return 1.0

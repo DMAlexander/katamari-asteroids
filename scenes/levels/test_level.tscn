@@ -1,6 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://xriadxufhsx8"]
+[gd_scene load_steps=8 format=3 uid="uid://xriadxufhsx8"]
 
+[ext_resource type="Texture2D" uid="uid://ebr0pbcot7eo" path="res://scenes/levels/BasicSpace1.png" id="1_cyt5c"]
 [ext_resource type="PackedScene" uid="uid://yqfc8kkwk0hx" path="res://scenes/player/Player.tscn" id="1_jbqir"]
+[ext_resource type="PackedScene" uid="uid://doddbbj6gnjee" path="res://scenes/pickups/mass_pickup.tscn" id="2_6xh4u"]
 [ext_resource type="PackedScene" uid="uid://bkao1ywcuegt2" path="res://scenes/debris/debris.tscn" id="2_yautc"]
 [ext_resource type="Script" uid="uid://cuqwumodo758e" path="res://scenes/levels/wave_manager.gd" id="3_fr1um"]
 [ext_resource type="Script" uid="uid://dwo07fh72fpli" path="res://scenes/levels/game_manager.gd" id="4_v45ci"]
@@ -8,14 +10,22 @@
 
 [node name="TestLevel" type="Node2D"]
 
-[node name="Background" type="ColorRect" parent="."]
-z_index = -10
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="Background" type="ColorRect" parent="CanvasLayer"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.043137256, 0.05882353, 0.101960786, 1)
+color = Color(0.86415356, 0.36714646, 0.85662, 0.6784314)
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_cyt5c")
 
 [node name="UI" type="CanvasLayer" parent="."]
 
@@ -31,6 +41,7 @@ offset_bottom = 23.0
 text = "Results:"
 
 [node name="Player" parent="." instance=ExtResource("1_jbqir")]
+mass_pickup_scene = ExtResource("2_6xh4u")
 
 [node name="Debris" parent="." instance=ExtResource("2_yautc")]
 position = Vector2(-28, -122)

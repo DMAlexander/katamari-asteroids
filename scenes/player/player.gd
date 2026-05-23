@@ -11,6 +11,7 @@ extends CharacterBody2D
 # SHOOTING
 # -------------------------
 @export var laser_scene: PackedScene
+@export var mass_pickup_scene: PackedScene
 @export var fire_rate := 0.15
 var can_shoot := true
 
@@ -107,10 +108,72 @@ func _physics_process(delta):
 	# -------------------------
 	apply_pre_move_bounds()
 	move_and_slide()
+	check_collisions()
 	apply_post_move_bounds()
 	update_camera(delta)
 
+func check_collisions():
 
+	for i in get_slide_collision_count():
+
+		var collision = get_slide_collision(i)
+		var collider = collision.get_collider()
+
+		if collider == null:
+			continue
+
+		if collider.has_method("get_mass_value"):
+
+			process_impact(collider)
+
+func process_impact(debris):
+
+	var debris_mass = debris.get_mass_value()
+
+	# compare against player mass
+	var ratio = debris_mass / mass
+
+	# how hard player hit
+	var speed = velocity.length()
+
+	# only punish significant impacts
+	if ratio > 0.35 and speed > 220:
+
+		var loss = ratio * 0.4
+
+		lose_mass(loss)
+
+		# optional bounce
+		velocity *= 0.6
+		
+func lose_mass(amount):
+
+	mass = max(1.0, mass - amount)
+
+	update_scale()
+	update_ui()
+	update_magnet()
+
+	spawn_lost_mass(amount)
+	
+func spawn_lost_mass(amount):
+
+	var pieces = int(ceil(amount * 3.0))
+
+	for i in range(pieces):
+
+		var pickup = mass_pickup_scene.instantiate()
+
+		get_tree().current_scene.add_child(pickup)
+
+		pickup.global_position = global_position
+
+		pickup.value = amount / pieces
+
+		var angle = randf() * TAU
+		var burst = Vector2.RIGHT.rotated(angle)
+
+		pickup.global_position += burst * randf_range(10, 30)
 # -------------------------
 # MOVEMENT HELPERS
 # -------------------------
