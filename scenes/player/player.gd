@@ -62,27 +62,49 @@ func _physics_process(delta):
 	visual_scale = lerp(visual_scale, 1.0, 8.0 * delta)
 	update_scale()
 
-	# input shooting
+	# -------------------------
+	# INPUT
+	# -------------------------
+	var braking := Input.is_action_pressed("brake")
+
 	if Input.is_action_pressed("shoot") and can_shoot:
 		shoot()
 
-	# rotation
+	# -------------------------
+	# ROTATION
+	# -------------------------
 	var rotation_input := Input.get_axis("move_left", "move_right")
 	rotation += rotation_input * get_effective_rotation_speed() * delta
 
-	# thrust
+	# -------------------------
+	# THRUST
+	# -------------------------
 	if Input.is_action_pressed("move_forward"):
 		var direction := Vector2.UP.rotated(rotation)
 		velocity += direction * get_effective_acceleration() * delta
 
-	# speed cap
+	# -------------------------
+	# SPEED CAP
+	# -------------------------
 	velocity = velocity.limit_length(max_speed)
 
-	# drag
+	# -------------------------
+	# DRAG (WITH BRAKE)
+	# -------------------------
 	var drag_strength = max(4.0 / mass, 0.5)
-	velocity = velocity.move_toward(Vector2.ZERO, drag_strength * delta * 20)
 
-	# physics step
+	if braking:
+		# stronger but still mass-dependent
+		drag_strength *= 4.0
+
+	velocity = velocity.move_toward(
+		Vector2.ZERO,
+		drag_strength * delta * 20
+	)
+
+	# -------------------------
+	# PHYSICS STEP
+	# -------------------------
 	apply_pre_move_bounds()
 	move_and_slide()
 	apply_post_move_bounds()
