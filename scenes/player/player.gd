@@ -26,12 +26,17 @@ var mass := 1.0
 
 @onready var camera = $Camera2D
 
+@export var base_magnet_radius := 200.0
+@export var magnet_growth := 12.0
+@export var max_magnet_radius := 900.0
+
 var can_shoot := true
 var visual_scale := 1.0
 
 func _ready():
 	update_scale()
 	update_ui()
+	update_magnet()
 
 func _physics_process(delta):
 
@@ -76,6 +81,10 @@ func get_effective_rotation_speed():
 		min_rotation_speed
 	)
 
+func get_magnet_strength():
+
+	return 1400.0 + mass * 60.0
+
 func update_camera_zoom(delta):
 
 	# Convert mass into a 0→1 ratio
@@ -107,6 +116,18 @@ func shoot():
 
 	can_shoot = true
 
+func update_magnet():
+
+	var radius = min(
+		base_magnet_radius + mass * magnet_growth,
+		max_magnet_radius
+	)
+
+	var shape = $MagnetArea/CircleShape2D.shape
+
+	if shape is CircleShape2D:
+		shape.radius = radius
+
 # -------------------------
 # MASS SYSTEM
 # -------------------------
@@ -123,6 +144,7 @@ func add_mass(amount: float):
 	update_scale()
 
 	update_ui()
+	update_magnet()
 
 func update_ui():
 

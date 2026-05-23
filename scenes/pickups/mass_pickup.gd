@@ -26,7 +26,12 @@ func _process(delta):
 
 		var dir = (target.global_position - global_position).normalized()
 
-		velocity += dir * acceleration * delta
+		var pull_strength = acceleration
+
+		if target.has_method("get_magnet_strength"):
+			pull_strength = target.get_magnet_strength()
+
+		velocity += dir * pull_strength * delta
 
 	velocity *= drag
 
