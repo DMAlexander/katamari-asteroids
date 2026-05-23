@@ -17,6 +17,15 @@ var mass := 1.0
 @export var mass_growth_scale := 0.02
 @onready var mass_label = get_tree().current_scene.get_node("UI/MassLabel")
 
+@export var min_acceleration := 120.0
+@export var min_rotation_speed := 1.2
+
+@export var min_zoom := 1.5
+@export var max_zoom := 0.7
+@export var zoom_smoothing := 4.0
+
+@onready var camera = $Camera2D
+
 var can_shoot := true
 var visual_scale := 1.0
 
@@ -36,19 +45,50 @@ func _physics_process(delta):
 
 	# Rotation
 	var rotation_input := Input.get_axis("move_left", "move_right")
-	rotation += rotation_input * rotation_speed * delta
+	rotation += rotation_input * get_effective_rotation_speed() * delta
 
 	# Forward thrust
 	if Input.is_action_pressed("move_forward"):
 		var direction := Vector2.UP.rotated(rotation)
-		velocity += direction * acceleration * delta
+		velocity += direction * get_effective_acceleration() * delta
 
 	velocity = velocity.limit_length(max_speed)
 
 	# Drag
-	velocity = velocity.move_toward(Vector2.ZERO, 20 * delta)
+	var drag_strength = max(4.0 / mass, 0.5)
+	velocity = velocity.move_toward(Vector2.ZERO, drag_strength * delta * 20)
 
+	update_camera_zoom(delta)
 	move_and_slide()
+
+func get_effective_acceleration():
+
+	return max(
+		acceleration / mass,
+		min_acceleration
+	)
+
+
+func get_effective_rotation_speed():
+
+	return max(
+		rotation_speed / sqrt(mass),
+		min_rotation_speed
+	)
+
+func update_camera_zoom(delta):
+
+	# Convert mass into a 0→1 ratio
+	var zoom_ratio = clamp((mass - 1.0) / 40.0, 0.0, 1.0)
+
+	# Interpolate between min and max zoom
+	var target_zoom = lerp(min_zoom, max_zoom, zoom_ratio)
+
+	# Smoothly move camera zoom
+	camera.zoom = camera.zoom.lerp(
+		Vector2.ONE * target_zoom,
+		zoom_smoothing * delta
+	)
 
 func shoot():
 
@@ -86,7 +126,10 @@ func add_mass(amount: float):
 
 func update_ui():
 
-	mass_label.text = "Mass: " + str(snapped(mass, 0.1))
+	mass_label.text = \
+	"Mass: " + str(snappedf(mass, 0.1)) + \
+	"\nAccel: " + str(snappedf(get_effective_acceleration(), 1)) + \
+	"\nTurn: " + str(snappedf(get_effective_rotation_speed(), 0.1))
 
 func update_scale():
 

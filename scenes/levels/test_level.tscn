@@ -16,3 +16,12 @@ text = "Mass: "
 
 [node name="Debris" parent="." instance=ExtResource("2_yautc")]
 position = Vector2(-28, -122)
+
+[node name="Debris2" parent="." instance=ExtResource("2_yautc")]
+position = Vector2(76, -99)
+
+[node name="Debris3" parent="." instance=ExtResource("2_yautc")]
+position = Vector2(113, -65)
+
+[node name="Debris4" parent="." instance=ExtResource("2_yautc")]
+position = Vector2(21, -76)
